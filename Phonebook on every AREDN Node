@@ -20,16 +20,11 @@ mkdir /srv
 cd srv
 mkdir tftp
 
-put the phonebook.xml in /srv/tftp
-
 Enable tftp service in dnsmasq:
 
-Edit  /etc/config/dhcp
+$ vi /etc/config/dhcp
 
-vi /etc/config/dhcp
-
-Navigate to end of configfile. Press "Insert" Key to edit/Insert Lines
-Append / Paste 
+You should see somwrthing like that:
 
 ----------------------------------------------------------------------
 config dhcp
@@ -51,11 +46,10 @@ config dhcp
 
 
 
+Navigate to end of configfile. Press "Ins" Key 
 
+Append the next lines (usually left mouse key)
 
-
-
-Append after the star-line
 *************************************
 
 config dnsmasq
@@ -63,25 +57,30 @@ config dnsmasq
  	option 'tftp_root' '/srv/tftp'
 
 **************************************
-
-  ---------------------------------------------------------------------
   
-  Press "ESC" key and then :
-  with wq write and exit configuration
-    
- To activate the service reboot node or use command:  service dnsmasq restart
+  Press "ESC" key and then ":wq"
+  
+ To activate the service:
+ $  service dnsmasq restart
+ or reboot router
  
+ First download of phonebook:
+ $ curl --output  /srv/tftp/phonebook.xml -O http://hb-aredn-srvt01.local.mesh/phonebook/phonebook.xml
  
- Ongoing:
+ "hb-aredn-srvt01.local.mesh" is the server hosting the phonebook
  
- Sync of Source XML, cronjob description for meshrouter (synchjob with check of changes) and a Routine to Install all nessesery Files, Configs, Jobs - is in work
+??? Sync of Source XML, cronjob description for meshrouter (synchjob with check of changes) and a Routine to Install all nessesery Files, Configs, Jobs - is in work
  
- Periodical sync can defined as a cronjob:
+ Define periodical sync as a cronjob:
  
- crontab -e
+ $ crontab -e
+ 
+ press "ins" key and append:
 
 */60 * * * * curl --output  /srv/tftp/phonebook.xml -O http://hb-aredn-srvt01.local.mesh/phonebook/phonebook.xml
 #---------------------------------------------------------------------------------------------------------------
+
+press ":wq"
 
 This will execute every 60min a synch and place the phonebook in /srv/tftp/phonebook.xml  on the (localhost.local.mesh) or on the node, that the Yealink is connected.
 
